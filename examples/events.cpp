@@ -19,6 +19,10 @@ namespace {
 
 FSL_MAIN("fsnotify-events", "fsnotify event display")
         (fostlib::ostream &out, fostlib::arguments &args) {
+    if ( args.size() < 2 ) {
+        std::cout << "Nothing to watch, giving up. "
+            "Specify directories to watch as arguments" << std::endl;
+    }
     std::thread io_service([]() {
     });
     io_service.join();
