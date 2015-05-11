@@ -1,0 +1,6 @@
+
+fost-exe fsnotify-events
+    :
+        ../../../fost-base/Cpp/fost-cli
+        main.cpp
+    ;
