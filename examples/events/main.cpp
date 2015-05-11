@@ -9,6 +9,9 @@
 #include <fost/main>
 #include <f5/fsnotify.hpp>
 
+#include <thread>
+#include <boost/asio.hpp>
+
 
 namespace {
 }
@@ -16,5 +19,8 @@ namespace {
 
 FSL_MAIN("fsnotify-events", "fsnotify event display")
         (fostlib::ostream &out, fostlib::arguments &args) {
+    std::thread io_service([]() {
+    });
+    io_service.join();
     return 0;
 }
