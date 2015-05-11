@@ -18,6 +18,18 @@ namespace f5 {
     inline namespace fsnotify {
 
 
+        class notifications {
+            int fd;
+        public:
+            notifications()
+            : fd(inotify_init1(IN_NONBLOCK)) {
+            }
+            ~notifications() {
+                close(fd);
+            }
+        };
+
+
     }
 
 

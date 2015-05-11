@@ -23,11 +23,7 @@ FSL_MAIN("fsnotify-events", "fsnotify event display")
         std::cout << "Nothing to watch, giving up. "
             "Specify directories to watch as arguments" << std::endl;
     }
-    int watches = inotify_init1(IN_NONBLOCK);
-    if ( watches < 0 ) {
-        std::cout << "Whoops, can't inotify at all" << std::endl;
-        return 1;
-    }
+    f5::fsnotify::notifications inotify;
     std::thread io_service([]() {
     });
     io_service.join();
