@@ -12,7 +12,7 @@ alias fost :
 explicit fost ;
 
 alias fsnotify :
-        ../fsnotify/examples/events
+        ../fsnotify/examples
     ;
 
 alias all :
