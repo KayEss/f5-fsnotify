@@ -79,12 +79,14 @@ namespace {
                                 break;
                             }
                             inotify_event &event = buffer.event;
+                            if ( event.mask & IN_CREATE )
+                                std::cout << "IN_CREATE ";
                             if ( event.mask & IN_OPEN )
                                 std::cout << "IN_OPEN ";
                             if ( event.mask & IN_CLOSE_NOWRITE )
                                 std::cout << "IN_CLOSE_NOWRITE ";
                             if ( event.mask & IN_CLOSE_WRITE )
-                                std::cout << "IN_CLOSE_WRITE";
+                                std::cout << "IN_CLOSE_WRITE ";
                             std::cout << descriptors[event.wd] << "/";
                             if ( event.len ) {
                                 std::cout << event.name;
