@@ -18,7 +18,7 @@
 namespace {
     struct callbacks {
         /// Just use char* for the directory entries
-        typedef char *directory_type;
+        typedef const char *directory_type;
 
         /// Callback when a watch has been added
         template<typename N>
