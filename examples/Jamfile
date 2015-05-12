@@ -1,4 +1,9 @@
 
+exe inotify-man7
+    :
+        inotify-man7.cpp
+    ;
+
 fost-exe fsnotify-events
     :
         ../../fost-base/Cpp/fost-cli
