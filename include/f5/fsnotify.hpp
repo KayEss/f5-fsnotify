@@ -37,7 +37,9 @@ namespace f5 {
             }
 
             /// Add a folder to watch
-            void watch(const typename C::directory_type &) {
+            void watch(const typename C::directory_type &directory) {
+                int wd = inotify_add_watch(fd, directory, IN_OPEN | IN_CLOSE);
+                cb.watch_added(*this, directory, wd);
             }
         };
 

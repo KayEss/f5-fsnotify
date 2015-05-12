@@ -17,7 +17,16 @@
 
 namespace {
     struct callbacks {
+        /// Just use char* for the directory entries
         typedef char *directory_type;
+
+        /// Callback when a watch has been added
+        template<typename N>
+        void watch_added(N notifier, directory_type directory,
+                int descriptor) {
+            std::cout << descriptor << ": " << directory
+                << " -- watched" << std::endl;
+        }
     };
 }
 
