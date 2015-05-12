@@ -5,32 +5,31 @@
         http://www.boost.org/LICENSE_1_0.txt
 */
 
+/*
+    This is a translation of the inotify example in the Linux man
+    page for inotify.
+*/
 
-#include <fost/main>
+
 #include <f5/fsnotify.hpp>
-
-#include <thread>
-#include <boost/asio.hpp>
+#include <iostream>
 
 
 namespace {
     struct callbacks {
+        typedef char *directory_type;
     };
 }
 
 
-FSL_MAIN("fsnotify-events", "fsnotify event display")
-        (fostlib::ostream &out, fostlib::arguments &args) {
-    if ( args.size() < 2 ) {
-        std::cout << "Nothing to watch, giving up. "
+int main(int argc, char *argv[]) {
+    if ( argc < 2 ) {
+        std::cerr << "Nothing to watch, giving up.\n"
             "Specify directories to watch as arguments" << std::endl;
     }
     f5::fsnotify::notifications<callbacks> inotify;
-    for ( auto directory= 1u; directory != args.size(); ++directory ) {
-        inotify.watch(fostlib::coerce<boost::filesystem::path>(args[directory]));
+    for ( int directory= 1; directory != argc; ++directory ) {
+        inotify.watch(argv[directory]);
     }
-    std::thread io_service([]() {
-    });
-    io_service.join();
     return 0;
 }

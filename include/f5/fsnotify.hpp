@@ -10,7 +10,7 @@
 
 
 #include <sys/inotify.h>
-#include <fost/file>
+#include <unistd.h>
 
 
 namespace f5 {
@@ -33,11 +33,11 @@ namespace f5 {
             }
             /// Close the file descriptors
             ~notifications() {
-                close(fd);
+                ::close(fd);
             }
 
             /// Add a folder to watch
-            void watch(const boost::filesystem::path &) {
+            void watch(const typename C::directory_type &) {
             }
         };
 
