@@ -10,6 +10,7 @@
 
 
 #include <sys/inotify.h>
+#include <fost/file>
 
 
 namespace f5 {
@@ -18,14 +19,25 @@ namespace f5 {
     inline namespace fsnotify {
 
 
+        /// Set up a set of notifications on folders
+        template<typename C>
         class notifications {
+            /// Instantiate an instance of the callbacks
+            C cb;
+            /// inotofy file descriptor
             int fd;
         public:
+            /// Start inotify support
             notifications()
             : fd(inotify_init1(IN_NONBLOCK)) {
             }
+            /// Close the file descriptors
             ~notifications() {
                 close(fd);
+            }
+
+            /// Add a folder to watch
+            void watch(const boost::filesystem::path &) {
             }
         };
 

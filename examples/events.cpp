@@ -14,6 +14,8 @@
 
 
 namespace {
+    struct callbacks {
+    };
 }
 
 
@@ -23,7 +25,10 @@ FSL_MAIN("fsnotify-events", "fsnotify event display")
         std::cout << "Nothing to watch, giving up. "
             "Specify directories to watch as arguments" << std::endl;
     }
-    f5::fsnotify::notifications inotify;
+    f5::fsnotify::notifications<callbacks> inotify;
+    for ( auto directory= 1u; directory != args.size(); ++directory ) {
+        inotify.watch(fostlib::coerce<boost::filesystem::path>(args[directory]));
+    }
     std::thread io_service([]() {
     });
     io_service.join();
