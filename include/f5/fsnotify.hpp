@@ -36,6 +36,11 @@ namespace f5 {
                 ::close(fd);
             }
 
+            /// Make non-copyable
+            notifications(const notifications &) = delete;
+            /// Make non-assignable
+            notifications &operator=(const notifications &) = delete;
+
             /// Add a folder to watch
             void watch(const typename C::directory_type &directory) {
                 int wd = inotify_add_watch(fd, directory, IN_OPEN | IN_CLOSE | IN_CREATE);
