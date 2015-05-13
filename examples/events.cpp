@@ -60,13 +60,14 @@ namespace {
                 } else if ( poll_num > 0 ) {
                     if ( pfds[1].revents & POLLIN ) {
                         char buf;
-                        while (read(STDIN_FILENO, &buf, 1) > 0 && buf != '\n')
+                        while (::read(STDIN_FILENO, &buf, 1) > 0 && buf != '\n')
                             continue;
                         break;
                     }
                     pollfd &pfd = pfds[0];
                     if ( pfd.revents & POLLIN ) {
-                        while ( true ) {
+                        for ( auto item=1; true; ++item ) {
+                            std::cout << item << ": ";
                             union {
                                 inotify_event event;
                                 char name[sizeof(inotify_event) + NAME_MAX + 1];
@@ -79,14 +80,24 @@ namespace {
                                 break;
                             }
                             inotify_event &event = buffer.event;
+                            if ( event.mask & IN_IGNORED )
+                                std::cout << "IN_IGNORED ";
                             if ( event.mask & IN_CREATE )
                                 std::cout << "IN_CREATE ";
                             if ( event.mask & IN_OPEN )
                                 std::cout << "IN_OPEN ";
+                            if ( event.mask & IN_MODIFY )
+                                std::cout << "IN_MODIFY ";
                             if ( event.mask & IN_CLOSE_NOWRITE )
                                 std::cout << "IN_CLOSE_NOWRITE ";
                             if ( event.mask & IN_CLOSE_WRITE )
                                 std::cout << "IN_CLOSE_WRITE ";
+                            if ( event.mask & IN_DELETE )
+                                std::cout << "IN_DELETE ";
+                            if ( event.mask & IN_DELETE_SELF )
+                                std::cout << "IN_DELETE_SELF ";
+                            if ( event.mask & IN_UNMOUNT )
+                                std::cout << "IN_UNMOUNT ";
                             std::cout << descriptors[event.wd] << "/";
                             if ( event.len ) {
                                 std::cout << event.name;
