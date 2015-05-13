@@ -67,7 +67,6 @@ namespace {
                     pollfd &pfd = pfds[0];
                     if ( pfd.revents & POLLIN ) {
                         for ( auto item=1; true; ++item ) {
-                            std::cout << item << ": ";
                             char buffer[10240]
                                 __attribute__ ((aligned(__alignof__(struct inotify_event))));
                             int len = ::read(fd, &buffer, sizeof(buffer));
