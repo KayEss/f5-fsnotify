@@ -68,10 +68,8 @@ namespace {
                     if ( pfd.revents & POLLIN ) {
                         for ( auto item=1; true; ++item ) {
                             std::cout << item << ": ";
-                            union {
-                                inotify_event event;
-                                char name[sizeof(inotify_event) + NAME_MAX + 1];
-                            } buffer;
+                            char buffer[10240]
+                                __attribute__ ((aligned(__alignof__(struct inotify_event))));
                             int len = ::read(fd, &buffer, sizeof(buffer));
                             if ( len == -1 && errno != EAGAIN ) {
                                 perror("reading event");
@@ -79,33 +77,36 @@ namespace {
                             } else if ( len <= 0 ) {
                                 break;
                             }
-                            inotify_event &event = buffer.event;
-                            if ( event.mask & IN_IGNORED )
-                                std::cout << "IN_IGNORED ";
-                            if ( event.mask & IN_CREATE )
-                                std::cout << "IN_CREATE ";
-                            if ( event.mask & IN_OPEN )
-                                std::cout << "IN_OPEN ";
-                            if ( event.mask & IN_MODIFY )
-                                std::cout << "IN_MODIFY ";
-                            if ( event.mask & IN_CLOSE_NOWRITE )
-                                std::cout << "IN_CLOSE_NOWRITE ";
-                            if ( event.mask & IN_CLOSE_WRITE )
-                                std::cout << "IN_CLOSE_WRITE ";
-                            if ( event.mask & IN_DELETE )
-                                std::cout << "IN_DELETE ";
-                            if ( event.mask & IN_DELETE_SELF )
-                                std::cout << "IN_DELETE_SELF ";
-                            if ( event.mask & IN_UNMOUNT )
-                                std::cout << "IN_UNMOUNT ";
-                            std::cout << descriptors[event.wd] << "/";
-                            if ( event.len ) {
-                                std::cout << event.name;
+                            for ( char *pevent = buffer; pevent < buffer + len; ) {
+                                inotify_event &event = *reinterpret_cast<inotify_event*>(pevent);;
+                                if ( event.mask & IN_IGNORED )
+                                    std::cout << "IN_IGNORED ";
+                                if ( event.mask & IN_CREATE )
+                                    std::cout << "IN_CREATE ";
+                                if ( event.mask & IN_OPEN )
+                                    std::cout << "IN_OPEN ";
+                                if ( event.mask & IN_MODIFY )
+                                    std::cout << "IN_MODIFY ";
+                                if ( event.mask & IN_CLOSE_NOWRITE )
+                                    std::cout << "IN_CLOSE_NOWRITE ";
+                                if ( event.mask & IN_CLOSE_WRITE )
+                                    std::cout << "IN_CLOSE_WRITE ";
+                                if ( event.mask & IN_DELETE )
+                                    std::cout << "IN_DELETE ";
+                                if ( event.mask & IN_DELETE_SELF )
+                                    std::cout << "IN_DELETE_SELF ";
+                                if ( event.mask & IN_UNMOUNT )
+                                    std::cout << "IN_UNMOUNT ";
+                                std::cout << descriptors[event.wd] << "/";
+                                if ( event.len ) {
+                                    std::cout << event.name;
+                                }
+                                if ( event.mask & IN_ISDIR )
+                                    std::cout << " [directory]" << std::endl;
+                                else
+                                    std::cout << " [file]" << std::endl;
+                                pevent += sizeof(inotify_event) + event.len;
                             }
-                            if ( event.mask & IN_ISDIR )
-                                std::cout << " [directory]" << std::endl;
-                            else
-                                std::cout << " [file]" << std::endl;
                         }
                     }
                     if ( pfd.revents & POLLPRI ) {
