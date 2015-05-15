@@ -14,6 +14,7 @@
 
 // f5 headers
 #include <f5/fsnotify.hpp>
+#include <f5/fsnotify/print.hpp>
 
 // C++ headers
 #include <cassert>
@@ -77,33 +78,8 @@ namespace {
                                 break;
                             }
                             for ( char *pevent = buffer; pevent < buffer + len; ) {
-                                inotify_event &event = *reinterpret_cast<inotify_event*>(pevent);;
-                                if ( event.mask & IN_IGNORED )
-                                    std::cout << "IN_IGNORED ";
-                                if ( event.mask & IN_CREATE )
-                                    std::cout << "IN_CREATE ";
-                                if ( event.mask & IN_OPEN )
-                                    std::cout << "IN_OPEN ";
-                                if ( event.mask & IN_MODIFY )
-                                    std::cout << "IN_MODIFY ";
-                                if ( event.mask & IN_CLOSE_NOWRITE )
-                                    std::cout << "IN_CLOSE_NOWRITE ";
-                                if ( event.mask & IN_CLOSE_WRITE )
-                                    std::cout << "IN_CLOSE_WRITE ";
-                                if ( event.mask & IN_DELETE )
-                                    std::cout << "IN_DELETE ";
-                                if ( event.mask & IN_DELETE_SELF )
-                                    std::cout << "IN_DELETE_SELF ";
-                                if ( event.mask & IN_UNMOUNT )
-                                    std::cout << "IN_UNMOUNT ";
-                                std::cout << descriptors[event.wd] << "/";
-                                if ( event.len ) {
-                                    std::cout << event.name;
-                                }
-                                if ( event.mask & IN_ISDIR )
-                                    std::cout << " [directory]" << std::endl;
-                                else
-                                    std::cout << " [file]" << std::endl;
+                                inotify_event &event = *reinterpret_cast<inotify_event*>(pevent);
+                                f5::print(std::cout, event, [this](int wd){ return descriptors[wd];});
                                 pevent += sizeof(inotify_event) + event.len;
                             }
                         }
@@ -139,7 +115,7 @@ int main(int argc, char *argv[]) {
         std::cerr << "Nothing to watch, giving up.\n"
             "Specify directories to watch as arguments" << std::endl;
     }
-    f5::fsnotify::notifications<callbacks> inotify;
+    f5::notifications<callbacks> inotify;
     for ( int directory= 1; directory != argc; ++directory ) {
         inotify.watch(argv[directory]);
     }
