@@ -38,12 +38,19 @@ namespace f5 {
                     out << "IN_DELETE ";
                 if ( event.mask & IN_DELETE_SELF )
                     out << "IN_DELETE_SELF ";
+                if ( event.mask & IN_MOVE_SELF )
+                    out << "IN_MOVE_SELF ";
+                if ( event.mask & IN_MOVED_FROM )
+                    out << "IN_MOVED_FROM ";
+                if ( event.mask & IN_MOVED_TO )
+                    out << "IN_MOVED_TO ";
                 if ( event.mask & IN_UNMOUNT )
                     out << "IN_UNMOUNT ";
                 out  << name(event.wd) << "/";
-                if ( event.len ) {
+                if ( event.len )
                     out << event.name;
-                }
+                if ( event.mask & (IN_MOVE_SELF | IN_MOVED_FROM | IN_MOVED_TO) )
+                    out << " " << event.cookie;
                 if ( event.mask & IN_ISDIR )
                     out << " [directory]" << std::endl;
                 else
