@@ -79,7 +79,7 @@ namespace {
                             }
                             for ( char *pevent = buffer; pevent < buffer + len; ) {
                                 inotify_event &event = *reinterpret_cast<inotify_event*>(pevent);
-                                f5::print(std::cout, event, [this](int wd){ return descriptors[wd];});
+                                notifier(event);
                                 pevent += sizeof(inotify_event) + event.len;
                             }
                         }
@@ -105,6 +105,9 @@ namespace {
                     }
                 }
             }
+        }
+        void process(const inotify_event &event) {
+            f5::print(std::cout, event, [this](int wd){ return descriptors[wd];});
         }
     };
 }

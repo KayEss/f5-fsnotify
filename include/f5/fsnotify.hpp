@@ -51,6 +51,11 @@ namespace f5 {
             auto operator () () {
                 return cb.loop(*this, fd);
             }
+
+            /// The work that you want to do with each event
+            auto operator () (const inotify_event &event) {
+                return cb.process(event);
+            }
         };
 
 
