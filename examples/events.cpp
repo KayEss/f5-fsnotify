@@ -45,6 +45,13 @@ namespace {
             descriptors[descriptor] = directory;
         }
 
+        /// Called if there is an error adding a watch
+        template<typename N>
+        void watch_error(N &notifier, directory_type) {
+            perror("setting watch");
+            exit(3);
+        }
+
         /// Callback to start listening for events
         template<typename N>
         void loop(N &notifier, int fd) {
