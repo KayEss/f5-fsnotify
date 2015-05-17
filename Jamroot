@@ -1,0 +1,22 @@
+path-constant TOP : . ;
+include $(TOP)/../boost-version.jam ;
+include ../fost-base/fost.jam ;
+
+fost-project rask
+    :
+        <include>include
+    ;
+
+alias fost :
+    ;
+explicit fost ;
+
+alias fsnotify :
+        ../fsnotify/examples
+    ;
+
+alias all :
+        fsnotify
+        fost
+    ;
+explicit all ;
