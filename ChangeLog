@@ -1,2 +1,5 @@
+2015-05-24  Kirit Saelensminde  <kirit@felspar.com>
+ Fix an error where a watch could be reported as added and in error at the same time.
+
 2015-05-23  Kirit Saelensminde  <kirit@felspar.com>
  Added ChangeLog
