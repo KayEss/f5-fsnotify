@@ -42,12 +42,13 @@ namespace f5 {
             notifications &operator=(const notifications &) = delete;
 
             /// Add a folder to watch
-            void watch(const typename C::directory_type &directory) {
+            void watch(const char *directory) {
                 int wd = inotify_add_watch(fd, directory, IN_OPEN | IN_CLOSE | IN_CREATE | IN_MODIFY| IN_DELETE | IN_DELETE_SELF | IN_MOVE | IN_MOVE_SELF);
                 if ( wd < 0 ) {
                     cb.watch_error(*this, directory);
+                } else {
+                    cb.watch_added(*this, fd, directory, wd);
                 }
-                cb.watch_added(*this, fd, directory, wd);
             }
 
             /// Enter the watch loop
