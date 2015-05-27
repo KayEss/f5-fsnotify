@@ -58,6 +58,17 @@ namespace f5 {
                 }
             }
 
+            /// Add a folder to watch using lambdas to capture the result
+            template<typename S, typename F>
+            void watch(const char *directory, S success, F failure) {
+                int wd = inotify_add_watch(fd, directory, IN_OPEN | IN_CLOSE | IN_CREATE | IN_MODIFY| IN_DELETE | IN_DELETE_SELF | IN_MOVE | IN_MOVE_SELF);
+                if ( wd < 0 ) {
+                    failure();
+                } else {
+                    success(wd);
+                }
+            }
+
             /// Enter the watch loop
             auto operator () () {
                 return cb.loop(*this, fd);
