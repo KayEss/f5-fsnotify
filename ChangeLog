@@ -1,3 +1,6 @@
+2015-05-27  Kirit Saelensminde  <kirit@felspar.com>
+ Split out the `::poll()` based reader into a separate header.
+
 2015-05-24  Kirit Saelensminde  <kirit@felspar.com>
  Fix an error where a watch could be reported as added and in error at the same time.
 
