@@ -12,6 +12,8 @@
 #include <sys/inotify.h>
 #include <unistd.h>
 
+#include <utility>
+
 
 namespace f5 {
 
@@ -30,6 +32,11 @@ namespace f5 {
             /// Start inotify support
             notifications()
             : fd(inotify_init1(IN_NONBLOCK)) {
+            }
+            /// Start inotify support, passing args on to callback
+            template<typename... A>
+            notifications(A&&... a)
+            : cb(std::forward<A>(a)...), fd(inotify_init1(IN_NONBLOCK)) {
             }
             /// Close the file descriptors
             ~notifications() {
