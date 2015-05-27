@@ -1,4 +1,5 @@
 2015-05-27  Kirit Saelensminde  <kirit@felspar.com>
+ Add a Boost.ASIO reader implementation with async IO.
  Split out the `::poll()` based reader into a separate header.
 
 2015-05-24  Kirit Saelensminde  <kirit@felspar.com>
