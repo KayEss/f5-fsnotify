@@ -9,6 +9,9 @@
 #pragma once
 
 
+#include <boost/asio.hpp>
+
+
 namespace f5 {
 
 
@@ -19,10 +22,22 @@ namespace f5 {
 
 
             /// Boost ASIO based reader
-            struct reader {
+            class reader {
+                /// The ASIO interface to the raw file descriptor
+                boost::asio::posix::stream_descriptor fd;
+
+            public:
+                /// Construct the reader
+                reader(boost::asio::io_service &s)
+                : fd(s) {
+                }
+
                 /// Callback that kicks off an ASIO task
                 template<typename N>
-                void loop(N &notifier, int fd) {
+                void loop(N &notifier, int infd) {
+                    fd.assign(infd);
+                    auto handler = [&notifier]() {
+                    };
                 };
             };
 
