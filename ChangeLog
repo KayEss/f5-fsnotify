@@ -1,4 +1,5 @@
 2015-05-29  Kirit Saelensminde  <kirit@felspar.com>
+ `f5::fsnotify::fost::mask_json` produces a JSON description of the event mask.
  Only watch directories.
 
 2015-05-27  Kirit Saelensminde  <kirit@felspar.com>
