@@ -47,8 +47,8 @@ namespace f5 {
                     boost::asio::async_read(fd, buffer,
                         boost::asio::transfer_at_least(sizeof(inotify_event)),
                         [this, &notifier](auto e, auto b) {
-                            handle(notifier, e, b);
-                            async_read(notifier);
+                            this->handle(notifier, e, b);
+                            this->async_read(notifier);
                         });
                 }
                 template<typename N>
