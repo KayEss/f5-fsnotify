@@ -1,6 +1,3 @@
-
-
-
 #include <errno.h>
 #include <poll.h>
 #include <stdio.h>
