@@ -12,6 +12,7 @@
 #include <sys/inotify.h>
 #include <unistd.h>
 
+#include <system_error>
 #include <utility>
 
 
@@ -52,7 +53,8 @@ namespace f5 {
             void watch(const char *directory) {
                 int wd = inotify_add_watch(fd, directory, IN_OPEN | IN_CLOSE | IN_CREATE | IN_MODIFY| IN_DELETE | IN_DELETE_SELF | IN_MOVE | IN_MOVE_SELF);
                 if ( wd < 0 ) {
-                    cb.watch_error(*this, directory);
+                    cb.watch_error(*this, directory,
+                        std::error_code(errno, std::system_category()));
                 } else {
                     cb.watch_added(*this, fd, directory, wd);
                 }

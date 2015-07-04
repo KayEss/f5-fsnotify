@@ -43,7 +43,7 @@ namespace {
 
         /// Called if there is an error adding a watch
         template<typename N>
-        void watch_error(N &notifier, directory_type) {
+        void watch_error(N &notifier, directory_type, const std::error_code &e) {
             perror("setting watch");
             exit(3);
         }
